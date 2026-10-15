@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Plant Planet – Science Unit 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#fff7e6;--ink:#2b2140;--card:#fff;--line:#2b2140;--g:#2fb86a;--y:#ffc233;--p:#ff6f91;--b:#3d9bff;--soft:#fff0cc;--ok:#d9f7e4;--no:#ffe0e0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1530;--ink:#fff4dc;--card:#2a2045;--line:#fff4dc;--soft:#3a2d5c;--ok:#1d5a3a;--no:#6a2a3a}}
+:root[data-theme="dark"]{--bg:#1c1530;--ink:#fff4dc;--card:#2a2045;--line:#fff4dc;--soft:#3a2d5c;--ok:#1d5a3a;--no:#6a2a3a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 18px/1.55 Nunito,"Trebuchet MS",sans-serif}
+h1,h2,h3,.btn{font-family:"Baloo 2","Comic Sans MS",sans-serif;line-height:1.15}
+header{padding:14px 18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+header h1{margin:0;font-size:clamp(24px,5vw,38px);flex:1;cursor:pointer}
+main{max-width:980px;margin:0 auto;padding:8px 16px 60px}
+.hero{background:var(--y);color:#2b2140;border:4px solid var(--line);border-radius:28px;padding:22px;box-shadow:0 8px 0 var(--line)}
+.hero h2{margin:0 0 6px;font-size:clamp(26px,6vw,42px)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:26px}
+.nav{border:4px solid var(--line);border-radius:26px;padding:20px;text-align:center;cursor:pointer;color:#2b2140;font:800 24px "Baloo 2",sans-serif;box-shadow:0 7px 0 var(--line);transition:transform .1s}
+.nav:hover{transform:translateY(-4px)}.nav:active{transform:translateY(4px);box-shadow:0 2px 0 var(--line)}
+.nav i{display:block;font-style:normal;font-size:56px}.nav small{display:block;font:600 15px Nunito,sans-serif}
+.btn{border:3px solid var(--line);background:var(--g);color:#fff;border-radius:16px;padding:10px 20px;font-size:20px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 var(--line)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.btn.b{background:var(--b)}.btn.p{background:var(--p)}.btn.y{background:var(--y);color:#2b2140}.btn.ghost{background:var(--card);color:var(--ink)}
+button:focus-visible,input:focus-visible,textarea:focus-visible,.nav:focus-visible{outline:4px solid var(--b);outline-offset:2px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:3px solid var(--line);border-radius:22px;padding:18px 20px;margin:16px 0}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.tab{border:3px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 18px;font:700 18px "Baloo 2",sans-serif;cursor:pointer}
+.tab.on{background:var(--p);color:#fff}
+table{border-collapse:collapse;width:100%;font-size:17px}th,td{border:2px solid var(--line);padding:6px 10px;text-align:left}th{background:var(--soft)}
+.tbl{overflow-x:auto}
+mark{background:var(--y);color:#2b2140;border-radius:6px;padding:0 5px}
+.n{color:#d6336c;font-weight:700}.v{color:#1c7ed6;font-weight:700}.a{color:#2b8a3e;font-weight:700}
+.opt{display:block;width:100%;text-align:left;margin:8px 0;padding:10px 14px;border:3px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:600 18px Nunito,sans-serif;cursor:pointer}
+.opt.sel{background:var(--soft);border-color:var(--b)}.opt.right{background:var(--ok)}.opt.wrong{background:var(--no)}
+input[type=text],input[type=email],textarea{width:100%;padding:12px;border:3px solid var(--line);border-radius:14px;font:600 18px Nunito,sans-serif;background:var(--card);color:var(--ink)}
+.ans{display:none;margin-top:10px;padding:10px 14px;background:var(--ok);border:3px dashed var(--g);border-radius:14px}.ans.on{display:block}
+.bar{height:18px;border:3px solid var(--line);border-radius:99px;overflow:hidden;background:var(--card)}.bar>div{height:100%;background:var(--g);width:0;transition:width .3s}
+.msg{color:#d6336c;font-weight:700;min-height:24px}
+.big{font:800 64px "Baloo 2",sans-serif;text-align:center}
+textarea.code{font:13px monospace;height:110px}
+.pop{position:fixed;inset:auto 0 20px 0;text-align:center;pointer-events:none;font:800 40px "Baloo 2",sans-serif;opacity:0}.pop.on{animation:p .9s}
+@keyframes p{0%{opacity:0;transform:scale(.5)}30%{opacity:1;transform:scale(1.2)}100%{opacity:0;transform:translateY(-40px)}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header><h1 onclick="go('home')" title="Home">🌱 Plant Planet</h1>
+<button class="btn ghost" id="sndb" onclick="toggleSnd()">🔊 Sound on</button>
+<button class="btn ghost" onclick="go('home')">🏠 Home</button></header>
+<main>
+<section id="home" class="view on">
+<div class="hero"><h2>Welcome, young scientist! 🔬</h2><p style="margin:0">Discover roots, stems, leaves and flowers – and how plants grow. Pick a card to begin!</p></div>
+<div class="grid">
+<div class="nav" tabindex="0" role="button" style="background:#ffd166" onclick="go('exp')"><i>📖</i>Explanation<small>Learn about plants</small></div>
+<div class="nav" tabindex="0" role="button" style="background:#8ce0a6" onclick="go('rev')"><i>🎯</i>Review<small>Practise with answers</small></div>
+<div class="nav" tabindex="0" role="button" style="background:#ff9bb3" onclick="go('test')"><i>🏆</i>Test<small>Show what you know</small></div>
+<div class="nav" tabindex="0" role="button" style="background:#9cc9ff" onclick="go('teach')"><i>👩‍🏫</i>Teacher Hub<small>Results &amp; Excel</small></div>
+</div></section>
+
+<section id="exp" class="view"><h2>📖 Explanation</h2>
+<div class="tabs" id="etabs"></div><div id="ebody"></div></section>
+
+<section id="rev" class="view"><h2>🎯 Review</h2>
+<p>Try each question. Tap <b>Show answer</b> any time to check!</p>
+<div class="tabs" id="rtabs"></div><div id="rbody"></div></section>
+
+<section id="test" class="view"><h2>🏆 Test</h2><div id="tbody"></div></section>
+
+<section id="teach" class="view"><h2>👩‍🏫 Teacher Hub</h2>
+<div class="card"><h3>1. Paste student result codes</h3>
+<p>Each student gets a code when they finish the test. Paste one or many codes (one per line).</p>
+<textarea class="code" id="codes" placeholder="Paste codes here…"></textarea>
+<p class="msg" id="tmsg"></p>
+<button class="btn b" onclick="addCodes()">➕ Add results</button></div>
+<div class="card"><h3>2. Results</h3><div class="tbl" id="rtable"></div><p></p>
+<button class="btn" onclick="exportX()">📥 Export to Excel</button>
+<button class="btn p" onclick="clearAll()">🗑️ Clear list</button>
+<p class="msg" id="xmsg"></p></div></section>
+</main>
+<div class="pop" id="pop"></div>
+
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let snd=true,AC;
+function beep(f,d=.15,t=0){if(!snd)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.type='triangle';g.gain.value=.15;o.connect(g);g.connect(AC.destination);o.start(AC.currentTime+t);o.stop(AC.currentTime+t+d)}catch(e){}}
+const good=()=>{beep(523,.12);beep(659,.12,.12);beep(784,.2,.24)},bad=()=>{beep(220,.25)};
+function toggleSnd(){snd=!snd;$('#sndb').textContent=snd?'🔊 Sound on':'🔇 Sound off'}
+function pop(t){const p=$('#pop');p.textContent=t;p.classList.remove('on');void p.offsetWidth;p.classList.add('on')}
+function go(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===id));speechSynthesis&&speechSynthesis.cancel();scrollTo(0,0);if(id==='test')renderTest();if(id==='teach')drawTable();beep(600,.08)}
+function say(el,btn){try{if(speechSynthesis.speaking){speechSynthesis.cancel();return}const u=new SpeechSynthesisUtterance($(el).innerText);u.lang='en-GB';u.rate=.85;speechSynthesis.speak(u)}catch(e){alert('Read aloud is not available on this device.')}}
+
+/* ---------- EXPLANATION ---------- */
+const EXP=[
+{t:'🌿 Think about plants',h:`<div class="card"><h3>What is a plant?</h3><p>Plants are <b>living things</b>. Many plants have four main parts: <mark>flowers</mark>, <mark>stem</mark>, <mark>leaf</mark> and <mark>roots</mark>. Each part has a <b>function</b> (a use).</p></div>
+<div class="card"><h3>Functions of the parts</h3><div class="tbl"><table><tr><th>Part</th><th>What it does</th></tr>
+<tr><td>🌱 Roots</td><td>Anchor the plant; take in water and nutrients</td></tr><tr><td>🌿 Stem</td><td>Transports water, nutrients and food; supports leaves and flowers</td></tr>
+<tr><td>🍃 Leaves</td><td>Make food for the plant</td></tr><tr><td>🌸 Flowers</td><td>Help some plants reproduce (make new plants)</td></tr></table></div></div>
+<div class="card"><h3>What do plants need to grow?</h3><p>☀️ <b>Sunlight</b>, 💧 <b>water</b> and 🔥 <b>warmth</b>. Plants grow from <b>seeds</b>, which <b>germinate</b> (start to grow) when the conditions are right.</p></div>`},
+{t:'🌱 Roots',h:`<div class="card"><h3>Two jobs for roots</h3><p>Most plants have roots. Roots have two functions:</p><p>⚓ <b>Anchor</b> (fix) the plant firmly in the ground. This stops it falling over or being pulled out by strong winds.</p><p>🚚 <b>Transport</b> (move) water and nutrients from the soil into the plant.</p></div>
+<div class="card"><h3>Think like a scientist!</h3><p>Look at the roots of a pot plant with a magnifier. What do you notice? What would happen to a plant with no roots? It could not take in water or nutrients, and it would fall over.</p><p>⚠️ <b>Work safely:</b> take the plant out of its pot very gently, do not break any part, and slide it carefully back when you finish.</p></div>
+<div class="card"><h3>Science words</h3><p><mark>anchor</mark> fix firmly in place • <mark>transport</mark> move from one place to another • <mark>nutrients</mark> things in soil that help plants grow</p></div>`},
+{t:'🌿 Stems',h:`<div class="card"><h3>Two jobs for stems</h3><p>🚚 The stem <b>transports</b> water and nutrients up to the leaves. It also moves <b>food</b> from the leaves to other parts of the plant.</p><p>💪 The stem <b>supports</b> the leaves and flowers.</p><p>Trees are plants too. The <b>trunk</b> of a tree is its stem!</p><p>🌲 <i>Did you know?</i> "General Sherman" in California, USA, is the largest single-stem tree on Earth.</p></div>
+<div class="card"><h3>Colour test 🌷</h3><p>Senara and Iben put white tulips of the same length into jars of different coloured water. Next day the flowers had changed colour! The stem transported the coloured water up into the flower.</p><p>It was <b>not a fair test</b> because each colour of dye may not travel equally well. A tulip left in clear water would stay white. Cut flowers usually have no roots, so water goes straight into the stem.</p></div>
+<div class="card"><h3>Stem investigation 📊</h3><p>Time for each plant stem to change colour:</p>
+<p>Chinese leaves – 3 hours<br><span style="display:block;height:22px;width:37%;background:var(--g);border-radius:8px"></span>
+Carnation – 4 hours<br><span style="display:block;height:22px;width:50%;background:var(--b);border-radius:8px"></span>
+Tulip – 5 hours<br><span style="display:block;height:22px;width:62%;background:var(--y);border-radius:8px"></span>
+Celery – 8 hours<br><span style="display:block;height:22px;width:100%;background:var(--p);border-radius:8px"></span></p>
+<p>All four plants transported water and dye. <b>Quickest:</b> Chinese leaves. <b>Slowest:</b> celery. A <b>bar chart</b> makes results easy to compare.</p></div>`},
+{t:'🍃 Leaves',h:`<div class="card"><h3>Food factories!</h3><p>Plants can turn <b>sunlight, water and air into food</b>. Leaves collect sunlight for the plant. Without sunlight, leaves cannot make food. They turn yellow and unhealthy, and the plant will die.</p></div>
+<div class="card"><h3>Parts of a leaf</h3><p>🔹 <mark>tip</mark> 🔹 <mark>vein</mark> 🔹 <mark>leaf stalk</mark> 🔹 <mark>leaf bud</mark></p><p><b>Evergreen</b> plants keep their leaves all year. <b>Deciduous</b> plants lose their leaves at one time of year. Look at a leaf with a magnifier: what is its shape, its edges, does it feel hairy, waxy or spongy?</p></div>`},
+{t:'🌸 Flowers & carnivores',h:`<div class="card"><h3>Flowers</h3><p>Most plants have flowers, and different plants have different types: daisy, thistle, water lily, rose, hibiscus. Flowers are how some plants <b>reproduce</b> (make new plants). Plants make flowers to make <b>seeds</b>, and the seeds grow into new plants.</p><p>🌺 <i>Did you know?</i> The world's largest flower is <i>Rafflesia arnoldii</i>.</p></div>
+<div class="card"><h3>Carnivorous plants 🪤</h3><p>There are nearly 400 000 kinds of plants! Most get nutrients from the soil, but <b>carnivorous</b> plants get extra nutrients by capturing insects.</p><p>The <b>pitcher plant</b> is brightly coloured and has a smell that attracts insects. Its rim is slippery, so insects slide into sticky liquid and drown. The liquid digests them, like the acid in our stomachs. Other carnivorous plants: <mark>Venus Flytrap</mark> <mark>Sundew</mark> <mark>Cobra Lily</mark>.</p></div>`},
+{t:'🔬 Fair tests',h:`<div class="card"><h3>Does temperature affect growth?</h3><p>Ayanna's class put two identical plants in different places. Plant A was at 5 °C and Plant B at 20 °C. Both got the same water and light, and both started at 0.5 g.</p><p>📈 <b>Results:</b> after 9 days Plant B had grown much more (about 4 g) than Plant A (about 1.5 g).</p><p><b>Conclusion:</b> Temperature affects plant growth. The plant in the warmer place grew more.</p></div>
+<div class="card"><h3>What makes a test fair?</h3><p>Change <b>one</b> thing only. Keep everything else the <b>same</b> (type of plant, size, water, light). Measure, record results (a bar chart helps), then write a conclusion using your <b>evidence</b>.</p></div>
+<div class="card"><h3>Change the conditions</h3><p>Plants grow best with sunlight, water and warmth. If one is taken away, the plant looks less healthy: leaves go yellow, droop or dry out. Healthy plants have green leaves and stand up tall. Use <b>evidence</b> from what you see to decide which condition was removed.</p></div>`}];
+let ei=0;
+function drawExp(){$('#etabs').innerHTML=EXP.map((e,i)=>`<button class="tab ${i==ei?'on':''}" onclick="ei=${i};drawExp()">${e.t}</button>`).join('');
+$('#ebody').innerHTML=`<button class="btn b" onclick="say('#ebox')">🔊 Read aloud</button><div id="ebox">${EXP[ei].h}</div>`}
+drawExp();
+
+/* ---------- QUESTIONS ---------- */
+const TF=[['Roots anchor the plant in the ground.',0,'True! Roots fix the plant firmly so wind cannot pull it out.'],
+['Food for the plant is made in the roots.',1,'False. Food is made in the leaves.'],
+['Pitcher plants are carnivorous.',0,'True! They get extra nutrients from insects.'],
+['A plant can make food without any sunlight.',1,'False. Without sunlight the leaves cannot make food and the plant dies.']];
+const MC=[['Which part of a plant makes food?',['Roots','Leaves','Stem'],1,'Leaves use sunlight, water and air to make food.'],
+['What do plants need to grow well?',['Sunlight, water and warmth','Only soil','Darkness and cold'],0,'These are the conditions for healthy growth.'],
+['What does the stem do?',['Makes seeds only','Transports water and supports the plant','Catches insects'],1,'The stem transports and supports.'],
+['In a fair test, how many things do you change?',['One','All of them','None'],0,'Change one thing and keep the rest the same.']];
+const FB=[['The ______ transport water and nutrients from the soil.',['roots','root'],'roots'],['Leaves make ______ for the plant.',['food'],'food'],
+['Plants grow from ______, which germinate in the right conditions.',['seeds','seed'],'seeds'],['Flowers are how some plants ______ (make new plants).',['reproduce'],'reproduce']];
+const SA=[['What would happen to a plant with no roots?','It could not take in water and nutrients, and it would fall over.'],
+['How did the white tulip change colour?','The stem transported the coloured water up into the flower.'],
+['Why must a test be fair?','So we can trust the results: only one thing changes and everything else stays the same.']];
+const norm=s=>String(s||'').toLowerCase().replace(/[^a-z0-9 ]/g,'').trim();
+
+let ri=0;const RT=['✅ True / False','🔘 Multiple Choice','✏️ Fill in the Blank','💭 Short Answer'];
+function drawRev(){$('#rtabs').innerHTML=RT.map((t,i)=>`<button class="tab ${i==ri?'on':''}" onclick="ri=${i};drawRev()">${t}</button>`).join('');
+let h='';
+if(ri==0)h=TF.map((q,i)=>`<div class="card"><b>${i+1}. ${esc(q[0])}</b><div id="tf${i}">${['True','False'].map((o,k)=>`<button class="opt" onclick="pick('tf',${i},${k},${q[1]})">${o}</button>`).join('')}</div><div class="ans" id="tfa${i}">✔ ${esc(q[2])}</div><button class="btn y" onclick="$('#tfa${i}').classList.add('on')">👀 Show answer</button></div>`).join('');
+if(ri==1)h=MC.map((q,i)=>`<div class="card"><b>${i+1}. ${esc(q[0])}</b><div id="mc${i}">${q[1].map((o,k)=>`<button class="opt" onclick="pick('mc',${i},${k},${q[2]})">${String.fromCharCode(65+k)}. ${esc(o)}</button>`).join('')}</div><div class="ans" id="mca${i}">✔ ${String.fromCharCode(65+q[2])}. ${esc(q[1][q[2]])} – ${esc(q[3])}</div><button class="btn y" onclick="$('#mca${i}').classList.add('on')">👀 Show answer</button></div>`).join('');
+if(ri==2)h=FB.map((q,i)=>`<div class="card"><b>${i+1}. ${esc(q[0])}</b><p><input type="text" id="fb${i}" placeholder="Type your answer"></p><button class="btn" onclick="chkFB(${i})">Check</button> <button class="btn y" onclick="$('#fba${i}').classList.add('on')">👀 Show answer</button><div class="ans" id="fba${i}">✔ ${esc(q[2])}</div><p id="fbm${i}"></p></div>`).join('');
+if(ri==3)h=SA.map((q,i)=>`<div class="card"><b>${i+1}. ${esc(q[0])}</b><p><textarea rows="2" placeholder="Write your answer"></textarea></p><button class="btn y" onclick="$('#saa${i}').classList.add('on')">👀 Show answer</button><div class="ans" id="saa${i}">✔ ${esc(q[1])}</div></div>`).join('');
+$('#rbody').innerHTML=h}
+function pick(p,i,k,c){const bs=$('#'+p+i).children;[...bs].forEach(b=>b.classList.remove('right','wrong'));bs[k].classList.add(k==c?'right':'wrong');if(k==c){bs[k].classList.add('right');good();pop('⭐ Great job!')}else{bad();pop('Try again 💪')}$('#'+p+'a'+i).classList.add('on')}
+function chkFB(i){const ok=FB[i][1].includes(norm($('#fb'+i).value));$('#fbm'+i).textContent=ok?'🎉 Correct!':'🤔 Not yet – try again or show the answer.';ok?(good(),pop('⭐ Amazing!')):bad()}
+drawRev();
+
+/* ---------- TEST ---------- */
+const Q=[
+{q:'Which part of a plant anchors it in the ground?',o:['Leaves','Roots','Flowers'],a:1},
+{q:'The stem supports the leaves and flowers.',o:['True','False'],a:0},
+{q:'Where is food made in a plant?',o:['In the roots','In the leaves','In the soil'],a:1},
+{q:'A plant can make food without any sunlight.',o:['True','False'],a:1},
+{q:'What do plants need to grow well?',o:['Sunlight, water and warmth','Darkness and cold','Only soil'],a:0},
+{q:'Type the missing word: The ______ transport water and nutrients from the soil into the plant.',f:['roots','root']},
+{q:'Plants that capture insects for extra nutrients are called ______ plants.',f:['carnivorous']},
+{q:'In the stem investigation, which plant changed colour the quickest?',o:['Celery (8 hours)','Chinese leaves (3 hours)','Tulip (5 hours)'],a:1},
+{q:'Why did the white tulip change colour? (Write 1–2 sentences)',k:['stem','transport','carr','moved','travel','took up','sucked','dye']},
+{q:'Name one thing that must stay the same to make a plant test fair.',k:['water','light','size','length','amount','same','type of plant','temperature','time']}];
+const corr=(q,a)=>q.o?a===q.a:q.f?q.f.includes(norm(a)):q.k.some(k=>norm(a).includes(norm(k)));
+const ansText=q=>q.o?q.o[q.a]:q.f?q.f[0]:'(Answers should mention: '+q.k.slice(0,4).join(' / ')+' …)';
+const stuText=(q,a)=>a==null||a===''?'(no answer)':q.o?q.o[a]:a;
+let T=null;
+function renderTest(){if(T&&T.on)return drawQ();
+$('#tbody').innerHTML=`<div class="card"><h3>Before we start 👋</h3><p>Please write your name and email. Both are needed!</p>
+<p><label>Your name<br><input type="text" id="sn" autocomplete="name" placeholder="e.g. Amina Bello"></label></p>
+<p><label>Your email<br><input type="email" id="se" autocomplete="email" placeholder="e.g. amina@email.com"></label></p>
+<p class="msg" id="smsg"></p><button class="btn" onclick="startTest()">🚀 Start the test</button>
+<p>10 questions • 10 points • Take your time!</p></div>`}
+function startTest(){const n=$('#sn').value.trim(),e=$('#se').value.trim();
+if(n.length<2){$('#smsg').textContent='⚠️ Please write your name.';bad();return}
+if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){$('#smsg').textContent='⚠️ Please write a real email, like name@email.com';bad();return}
+T={on:1,n,e,st:new Date().toISOString(),a:Array(Q.length).fill(null),i:0};good();drawQ()}
+function drawQ(){const q=Q[T.i],a=T.a[T.i];
+let inp=q.o?q.o.map((o,k)=>`<button class="opt ${a===k?'sel':''}" onclick="setA(${k})">${String.fromCharCode(65+k)}. ${esc(o)}</button>`).join(''):q.f?`<input type="text" id="ti" value="${esc(a||'')}" oninput="T.a[T.i]=this.value" placeholder="Type here">`:`<textarea id="ti" rows="3" oninput="T.a[T.i]=this.value" placeholder="Write your answer">${esc(a||'')}</textarea>`;
+$('#tbody').innerHTML=`<div class="bar"><div style="width:${T.i/Q.length*100}%"></div></div><p>Question ${T.i+1} of ${Q.length} • ${esc(T.n)}</p>
+<div class="card"><h3>${esc(q.q)}</h3>${inp}</div>
+<button class="btn ghost" ${T.i?'':'disabled'} onclick="T.i--;drawQ()">⬅ Back</button>
+<button class="btn" onclick="nextQ()">${T.i==Q.length-1?'🏁 Finish':'Next ➡'}</button>`}
+function setA(k){T.a[T.i]=k;beep(500,.08);drawQ()}
+function nextQ(){beep(600,.08);if(T.i<Q.length-1){T.i++;drawQ()}else finish()}
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o))));
+const dec=s=>JSON.parse(decodeURIComponent(escape(atob(s.trim()))));
+function finish(){const miss=T.a.filter(x=>x==null||x==='').length;
+if(miss&&!confirm(miss+' question(s) not answered. Finish anyway?'))return;
+T.en=new Date().toISOString();T.on=0;const sc=T.a.reduce((s,a,i)=>s+(corr(Q[i],a)?1:0),0);
+const code='SCU2-'+enc({n:T.n,e:T.e,st:T.st,en:T.en,a:T.a});
+sc>=Q.length*.6?good():bad();
+$('#tbody').innerHTML=`<div class="card"><div class="big">${sc>=8?'🏆':sc>=5?'⭐':'💪'} ${sc} / ${Q.length}</div><h3 style="text-align:center">${sc>=8?'Superstar, '+esc(T.n)+'!':sc>=5?'Well done, '+esc(T.n)+'!':'Good try, '+esc(T.n)+'! Practise in Review.'}</h3></div>
+<div class="card"><h3>📨 Your result code</h3><p>Copy this code and send it to your teacher.</p><textarea class="code" id="rc" readonly onclick="this.select()">${code}</textarea><p><button class="btn b" onclick="copyC()">📋 Copy code</button> <span id="cm"></span></p></div>
+<div class="card"><h3>Your answers</h3>${Q.map((q,i)=>{const ok=corr(q,T.a[i]);return `<p>${ok?'✅':'❌'} <b>${i+1}. ${esc(q.q)}</b><br>You: ${esc(stuText(q,T.a[i]))}${ok?'':'<br>Correct: '+esc(ansText(q))}</p>`}).join('')}</div>
+<button class="btn p" onclick="T=null;renderTest()">🔄 New student</button>`;
+if(window.claude&&claude.use){}}
+function copyC(){const t=$('#rc');t.select();try{navigator.clipboard.writeText(t.value);}catch(e){document.execCommand('copy')}$('#cm').textContent='✅ Copied!'}
+
+/* ---------- TEACHER ---------- */
+let R=[];try{R=JSON.parse(localStorage.getItem('scu2')||'[]')}catch(e){}
+const save=()=>{try{localStorage.setItem('scu2',JSON.stringify(R))}catch(e){}};
+const score=r=>r.a.reduce((s,a,i)=>s+(corr(Q[i],a)?1:0),0);
+function addCodes(){let ok=0,bad_=0;$('#codes').value.split(/\s+/).filter(Boolean).forEach(c=>{try{const o=dec(c.replace(/^SCU2-/,''));if(!o.n||!Array.isArray(o.a))throw 0;if(!R.some(r=>r.e===o.e&&r.st===o.st)){R.push(o);ok++}}catch(e){bad_++}});
+save();drawTable();$('#tmsg').textContent=`✅ Added ${ok} result(s).`+(bad_?` ⚠️ ${bad_} code(s) could not be read.`:'');if(ok)$('#codes').value=''}
+function drawTable(){$('#rtable').innerHTML=R.length?`<table><tr><th>Name</th><th>Email</th><th>Score</th></tr>${R.map(r=>`<tr><td>${esc(r.n)}</td><td>${esc(r.e)}</td><td>${score(r)} / ${Q.length}</td></tr>`).join('')}</table>`:'<p>No results yet. Paste a code above.</p>'}
+function clearAll(){if(confirm('Remove all results from this list?')){R=[];save();drawTable()}}
+async function exportX(){if(!R.length){$('#xmsg').textContent='⚠️ Add at least one result first.';return}
+const qs=(r,v)=>Q.map((q,i)=>corr(q,r.a[i])===v?'Q'+(i+1):null).filter(Boolean).join(', ')||'-';
+const d=s=>new Date(s).toLocaleString();
+const res=[['Student name','Student email','Score','Total score','Percentage','Correct questions','Incorrect questions','Test start time','Test end time','Duration (min)']].concat(R.map(r=>[r.n,r.e,score(r),Q.length,Math.round(score(r)/Q.length*100)+'%',qs(r,true),qs(r,false),d(r.st),d(r.en),Math.round((new Date(r.en)-new Date(r.st))/6000)/10]));
+const det=[['Student name','Student email','Question no.','Question','Student answer','Correct answer','Result']];
+R.forEach(r=>Q.forEach((q,i)=>det.push([r.n,r.e,i+1,q.q,stuText(q,r.a[i]),ansText(q),corr(q,r.a[i])?'Correct':'Incorrect'])));
+const wb=XLSX.utils.book_new();[['Results',res],['Answers',det]].forEach(([n,rows])=>{const ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=rows[0].map((_,c)=>({wch:Math.min(50,Math.max(...rows.map(r=>String(r[c]).length))+2)}));XLSX.utils.book_append_sheet(wb,ws,n)});
+try{const dl=await claude.use('downloads');if(!dl){$('#xmsg').textContent='⚠️ Saving files is not available in this view. Open the artifact link in claude.ai.';return}
+await dl.save({filename:'science-student-results.xlsx',data:XLSX.write(wb,{type:'array',bookType:'xlsx'})});$('#xmsg').textContent='✅ Excel file ready!'}
+catch(e){$('#xmsg').textContent=e&&e.code==='declined'?'Download cancelled.':'⚠️ Could not save the file ('+(e&&e.code||'error')+').'}}
+</script></body></html>
